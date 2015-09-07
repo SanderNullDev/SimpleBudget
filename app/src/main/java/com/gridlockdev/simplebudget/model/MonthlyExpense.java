@@ -4,7 +4,6 @@ import com.gridlockdev.simplebudget.utils.BudgetUtils;
 import com.orm.SugarRecord;
 import com.orm.dsl.Ignore;
 
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -13,8 +12,6 @@ import java.util.List;
 public class MonthlyExpense extends SugarRecord<MonthlyExpense> {
 
     @Ignore
-    private HashMap<String, DailyExpense> expenseList;
-    @Ignore
     private List<DailyExpense> expenses;
     private double monthlyBudget;
     private String month;
@@ -22,22 +19,13 @@ public class MonthlyExpense extends SugarRecord<MonthlyExpense> {
 
     public MonthlyExpense() {
         month = BudgetUtils.getMonthString();
-        expenseList = new HashMap<String, DailyExpense>();
     }
 
     public MonthlyExpense(double budget) {
         month = BudgetUtils.getMonthString();
-        expenseList = new HashMap<String, DailyExpense>();
         this.monthlyBudget = budget;
     }
 
-    public HashMap<String, DailyExpense> getExpenseList() {
-        return expenseList;
-    }
-
-    public void setExpenseList(HashMap<String, DailyExpense> expenseList) {
-        this.expenseList = expenseList;
-    }
 
     public double getMonthlyBudget() {
         return monthlyBudget;
@@ -55,19 +43,20 @@ public class MonthlyExpense extends SugarRecord<MonthlyExpense> {
         this.month = month;
     }
 
-    public void addExpense(DailyExpense expense){
-        this.expenseList.put(expense.getDay(), expense);
-    }
-
-    public double getMonthlyExpenses(){
+    public double getMonthlyExpenses() {
         double expense = 0;
 
         List<DailyExpense> currentMonth = DailyExpense.find(DailyExpense.class, "month =?", month);
 
-        for(DailyExpense exp : currentMonth){
+        for (DailyExpense exp : currentMonth) {
             expense += exp.getSpentToday();
         }
 
         return expense;
+    }
+
+    public List<DailyExpense> getMonthlyExpensesList() {
+        List<DailyExpense> expenses = DailyExpense.find(DailyExpense.class, "month = ?", month);
+        return expenses;
     }
 }
