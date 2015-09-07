@@ -1,5 +1,6 @@
 package com.gridlockdev.simplebudget.model;
 
+import com.gridlockdev.simplebudget.utils.BudgetUtils;
 import com.orm.SugarRecord;
 
 /**
@@ -8,10 +9,18 @@ import com.orm.SugarRecord;
 public class DailyExpense extends SugarRecord<DailyExpense>{
 
     private double spentToday;
+    private String day;
+    private String month;
 
-    public DailyExpense(){}
+    public DailyExpense(){
+        day = BudgetUtils.getDayString();
+        month = BudgetUtils.getMonthString();
+        spentToday = 0;
+    }
     public DailyExpense(double spent){
         this.spentToday = spent;
+        day = BudgetUtils.getDayString();
+        month = BudgetUtils.getMonthString();
     }
 
     public double getSpentToday() {
@@ -20,5 +29,13 @@ public class DailyExpense extends SugarRecord<DailyExpense>{
 
     public void setSpentToday(double spentToday) {
         this.spentToday = spentToday;
+    }
+
+    public String getDay() {
+        return day;
+    }
+
+    public void setDay(String day) {
+        this.day = day;
     }
 }
