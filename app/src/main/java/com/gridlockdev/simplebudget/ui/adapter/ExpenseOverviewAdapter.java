@@ -14,17 +14,17 @@ import java.util.List;
 /**
  * Created by Sander on 7-9-2015.
  */
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
+public class ExpenseOverviewAdapter extends RecyclerView.Adapter<ExpenseOverviewAdapter.ViewHolder> {
     private List<DailyExpense> mExpenses;
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public MyAdapter(List<DailyExpense> mExpenses) {
+    public ExpenseOverviewAdapter(List<DailyExpense> mExpenses) {
         this.mExpenses = mExpenses;
     }
 
     // Create new views (invoked by the layout manager)
     @Override
-    public MyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
+    public ExpenseOverviewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
                                                    int viewType) {
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
@@ -53,7 +53,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     public void add(DailyExpense item, int position) {
         mExpenses.add(position, item);
-        notifyItemInserted(position);
+
     }
 
     public void remove(DailyExpense item) {

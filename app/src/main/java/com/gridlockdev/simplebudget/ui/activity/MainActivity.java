@@ -8,17 +8,19 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+
 import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.gridlockdev.simplebudget.R;
 import com.gridlockdev.simplebudget.model.DailyExpense;
 import com.gridlockdev.simplebudget.model.MonthlyExpense;
-import com.gridlockdev.simplebudget.ui.adapter.MyAdapter;
+import com.gridlockdev.simplebudget.ui.adapter.ExpenseOverviewAdapter;
 import com.gridlockdev.simplebudget.utils.BudgetUtils;
 
 public class MainActivity extends AppCompatActivity {
@@ -29,17 +31,24 @@ public class MainActivity extends AppCompatActivity {
     private MonthlyExpense currentMonthlyExpense;
 
     private RecyclerView mRecyclerView;
-    private MyAdapter mAdapter;
+    private ExpenseOverviewAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+
+    private TextView mMonthlyBudget;
+    private TextView mCurrentlySpent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mMonthlyBudget = (TextView) findViewById(R.id.budget_amount_left);
+        mCurrentlySpent = (TextView) findViewById(R.id.budget_amount_spent);
+
+
         setCurrentExpense();
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
-
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
 
         // use this setting to improve performance if you know that changes
@@ -51,15 +60,13 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        mAdapter = new MyAdapter(currentMonthlyExpense.getMonthlyExpensesList());
+        mAdapter = new ExpenseOverviewAdapter(currentMonthlyExpense.getMonthlyExpensesList());
         mRecyclerView.setAdapter(mAdapter);
 
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-
 
 
         addExpenseButton = (Button) findViewById(R.id.add_expense_button);
@@ -77,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onInput(MaterialDialog dialog, CharSequence input) {
                                 // Do something
-                               // MainActivity.this.value = input.toString();
+                                // MainActivity.this.value = input.toString();
 //                                Double spent = Double.parseDouble(input.toString());
 //                                DailyExpense today = BudgetUtils.getCurrentDay();
 //                                today.setSpentToday(today.getSpentToday() + spent);
@@ -88,14 +95,16 @@ public class MainActivity extends AppCompatActivity {
                                 spentExpense.save();
 
                                 mAdapter.add(spentExpense, 0);
+                                mAdapter.notifyItemInserted(0);
+                                mRecyclerView.scrollToPosition(0);
+
+                                mMonthlyBudget.setText("€" + (currentMonthlyExpense.getMonthlyBudget() - currentMonthlyExpense.getMonthlyExpenses()));
+                                mCurrentlySpent.setText("€" + currentMonthlyExpense.getMonthlyExpenses());
 
                             }
                         }).show();
             }
         });
-
-
-
 
 
     }
@@ -123,9 +132,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void setCurrentExpense(){
+    private void setCurrentExpense() {
         currentMonthlyExpense = BudgetUtils.getCurrentMonth();
-        if(currentMonthlyExpense.getMonthlyBudget() == 0){
+        if (currentMonthlyExpense.getMonthlyBudget() == 0) {
             new MaterialDialog.Builder(MainActivity.this)
                     .title("Input budget")
                     .content("Input your budget below")
@@ -137,13 +146,21 @@ public class MainActivity extends AppCompatActivity {
                             double budget = Double.parseDouble(input.toString());
                             currentMonthlyExpense.setMonthlyBudget(budget);
                             currentMonthlyExpense.save();
+
+                            mMonthlyBudget.setText("€" + currentMonthlyExpense.getMonthlyBudget());
+                            mCurrentlySpent.setText("€" + currentMonthlyExpense.getMonthlyExpenses());
+
                         }
                     }).show();
-        }else{
+        } else {
             //Toast.makeText(MainActivity.this, "Budget is "+currentMonthlyExpense.getMonthlyBudget(), Toast.LENGTH_LONG).show();
-            Snackbar.make(findViewById(android.R.id.content), "Budget is "+currentMonthlyExpense.getMonthlyBudget()+", Total spent is "+currentMonthlyExpense.getMonthlyExpenses(), Snackbar.LENGTH_LONG)
+            Snackbar.make(findViewById(android.R.id.content), "Budget is " + currentMonthlyExpense.getMonthlyBudget() + ", Total spent is " + currentMonthlyExpense.getMonthlyExpenses(), Snackbar.LENGTH_LONG)
                     .setActionTextColor(Color.RED)
                     .show();
+
+
+            mMonthlyBudget.setText("€" + (currentMonthlyExpense.getMonthlyBudget() - currentMonthlyExpense.getMonthlyExpenses()));
+            mCurrentlySpent.setText("€" + currentMonthlyExpense.getMonthlyExpenses());
 
         }
     }
