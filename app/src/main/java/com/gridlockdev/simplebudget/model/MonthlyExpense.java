@@ -49,7 +49,7 @@ public class MonthlyExpense extends SugarRecord<MonthlyExpense> {
         List<DailyExpense> currentMonth = DailyExpense.find(DailyExpense.class, "month =?", month);
 
         for (DailyExpense exp : currentMonth) {
-            expense += exp.getSpentToday();
+            expense += exp.getSpent();
         }
 
         return expense;
@@ -59,5 +59,25 @@ public class MonthlyExpense extends SugarRecord<MonthlyExpense> {
         String[] args = {month};
         List<DailyExpense> expenses = DailyExpense.find(DailyExpense.class, "month = ?", args,null,"timestamp desc",null);
         return expenses;
+    }
+
+    public List<DailyExpense> getExpensesOfTheDay(){
+        String day = BudgetUtils.getDayString();
+        String[] args = {day};
+        List<DailyExpense> expenses = DailyExpense.find(DailyExpense.class, "day = ?", args, null, "timestamp desc", null);
+        return expenses;
+    }
+
+    public double getDailyBudgetLeft(){
+        List<DailyExpense> exp = getExpensesOfTheDay();
+        double expense = 0;
+        for(DailyExpense ex : exp){
+            expense += ex.getSpent();
+        }
+        return getDailyBudgetLeft();
+    }
+
+    public double getMonthlyBudgetLeft(){
+        return getMonthlyBudget() - getMonthlyExpenses();
     }
 }

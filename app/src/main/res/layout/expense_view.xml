@@ -1,24 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="6dp"
     android:background="@color/white"
-    android:elevation="2dp"
-    android:padding="4dp"
     android:clipToPadding="false"
-    android:orientation="vertical">
+    android:elevation="2dp"
+    android:minHeight="72dp"
+    android:orientation="vertical"
+    android:paddingBottom="4dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="4dp">
 
     <com.devspark.robototextview.widget.RobotoTextView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/budget_view_expense"
+        android:id="@+id/expense_list_spent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:textSize="30sp"
+        android:layout_centerVertical="true"
+        android:gravity="center_vertical"
+        android:text="€2.50"
+        android:textSize="48sp"
         app:fontFamily="roboto"
         app:textStyle="normal"
         app:textWeight="medium" />
 
-</LinearLayout>
+    <com.devspark.robototextview.widget.RobotoTextView
+        android:id="@+id/expense_list_timestamp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:text="Timestamp"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textStyle="italic" />
+
+    <TextView
+        android:id="@+id/expense_list_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/expense_list_spent"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="10dp"
+        android:gravity="center_vertical"
+        android:text="Left today: €72.20"
+        android:textSize="22sp"
+
+ />
+
+</RelativeLayout>
 

@@ -8,7 +8,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-
 import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -60,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        mAdapter = new ExpenseOverviewAdapter(currentMonthlyExpense.getMonthlyExpensesList());
+        mAdapter = new ExpenseOverviewAdapter(currentMonthlyExpense.getExpensesOfTheDay());
         mRecyclerView.setAdapter(mAdapter);
 
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -87,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
                                 // MainActivity.this.value = input.toString();
 //                                Double spent = Double.parseDouble(input.toString());
 //                                DailyExpense today = BudgetUtils.getCurrentDay();
-//                                today.setSpentToday(today.getSpentToday() + spent);
+//                                today.setSpentToday(today.getSpent() + spent);
 //                                today.save();
 
                                 Double spent = Double.parseDouble(input.toString());

@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.gridlockdev.simplebudget.ui.views.SquareRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
-    android:elevation="4dp"
-    android:padding="4dp"
-    android:clipToPadding="false"
+    android:layout_margin="16dp"
     android:layout_marginTop="6dp"
-    android:orientation="vertical">
+    android:background="@color/white"
+    android:clipToPadding="false"
+    android:elevation="4dp"
+    android:orientation="vertical"
+    android:padding="4dp">
 
     <com.devspark.robototextview.widget.RobotoTextView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -15,6 +16,7 @@
         android:layout_width="wrap_content"
 
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal"
         android:paddingTop="6dp"
         android:text="€500"
@@ -28,16 +30,18 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/budget_amount_spent"
         android:layout_width="wrap_content"
-
         android:layout_height="wrap_content"
+        android:layout_below="@id/budget_amount_left"
+        android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal"
+        android:layout_margin="10dp"
         android:paddingTop="6dp"
         android:text="€100"
         android:textSize="30sp"
         app:fontFamily="roboto_slab"
         app:textWeight="light" />
 
-</LinearLayout>
+</com.gridlockdev.simplebudget.ui.views.SquareRelativeLayout>
 
 
 

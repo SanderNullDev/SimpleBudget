@@ -19,6 +19,7 @@ public class DailyExpense extends SugarRecord<DailyExpense>{
         spentToday = 0;
         timestamp = System.currentTimeMillis();
     }
+
     public DailyExpense(double spent){
         this.spentToday = spent;
         day = BudgetUtils.getDayString();
@@ -26,7 +27,11 @@ public class DailyExpense extends SugarRecord<DailyExpense>{
         timestamp = System.currentTimeMillis();
     }
 
-    public double getSpentToday() {
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public double getSpent() {
         return spentToday;
     }
 
