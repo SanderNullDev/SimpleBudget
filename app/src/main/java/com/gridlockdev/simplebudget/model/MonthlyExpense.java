@@ -64,7 +64,7 @@ public class MonthlyExpense extends SugarRecord<MonthlyExpense> {
     public List<DailyExpense> getExpensesOfTheDay(){
         String day = BudgetUtils.getDayString();
         String[] args = {day};
-        List<DailyExpense> expenses = DailyExpense.find(DailyExpense.class, "day = ?", args, null, "timestamp desc", null);
+        List<DailyExpense> expenses = DailyExpense.find(DailyExpense.class, "day = ?", args, null, "timestamp asc", null);
         return expenses;
     }
 

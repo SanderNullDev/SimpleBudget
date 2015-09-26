@@ -11,39 +11,7 @@
         android:clipToPadding="false" />
 
 
-    <LinearLayout
-        android:id="@+id/container_body"
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:clipToPadding="false"
-        android:orientation="vertical"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin">
 
-        <include
-            android:id="@+id/budget_overview"
-            layout="@layout/budget_progress"
-            android:clipToPadding="false" />
-
-        <Button
-            android:id="@+id/add_expense_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="5dp"
-            android:text="Add expense" />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/my_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:padding="4dp"
-            android:scrollbars="vertical" />
-
-    </LinearLayout>
 
 
 </LinearLayout>

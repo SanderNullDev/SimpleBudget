@@ -75,12 +75,13 @@ public class ExpenseOverviewAdapter extends RecyclerView.Adapter<ExpenseOverview
 
         holder.mTimestamp.setText(dateString);
 
-        this.mDailyBudget -= value;
-        holder.mLeft.setText(formatter.format(mDailyBudget));
-
-
-
-
+//        if(this.mDailyBudget == 0){
+//            this.mMonthlyBudget = BudgetUtils.getCurrentMonth().getMonthlyBudget();
+//            this.numDays = calendar.getActualMaximum(Calendar.DATE);
+//            this.mDailyBudget = mMonthlyBudget / numDays;
+//        }
+//        this.mDailyBudget -= value;
+        holder.mLeft.setText(formatter.format(mExpenses.get(position).getBudgetLeft()));
 
 
     }
@@ -93,6 +94,11 @@ public class ExpenseOverviewAdapter extends RecyclerView.Adapter<ExpenseOverview
 
     public void add(DailyExpense item, int position) {
         mExpenses.add(position, item);
+
+    }
+
+    public void add(DailyExpense item) {
+        mExpenses.add(item);
 
     }
 
