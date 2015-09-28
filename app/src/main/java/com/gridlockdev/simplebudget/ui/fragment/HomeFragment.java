@@ -1,6 +1,7 @@
 package com.gridlockdev.simplebudget.ui.fragment;
 
 
+import android.animation.ObjectAnimator;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -10,7 +11,9 @@ import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -19,6 +22,11 @@ import com.gridlockdev.simplebudget.model.DailyExpense;
 import com.gridlockdev.simplebudget.model.MonthlyExpense;
 import com.gridlockdev.simplebudget.ui.adapter.ExpenseOverviewAdapter;
 import com.gridlockdev.simplebudget.utils.BudgetUtils;
+
+import java.text.NumberFormat;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 
 /**
@@ -31,21 +39,21 @@ public class HomeFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
+    @Bind(R.id.budget_progress)
+    ProgressBar progressbar;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
     private Button addExpenseButton;
     private String value;
     private MonthlyExpense currentMonthlyExpense;
-
     private RecyclerView mRecyclerView;
     private ExpenseOverviewAdapter mAdapter;
     private LinearLayoutManager mLayoutManager;
-
     private TextView mMonthlyBudget;
     private TextView mCurrentlySpent;
+    private double currentBudget;
+    private double budgetSpent;
 
 
     public HomeFragment() {
@@ -83,7 +91,9 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        ButterKnife.bind(this, view);
+        return view;
     }
 
     @Override
@@ -158,6 +168,7 @@ public class HomeFragment extends Fragment {
 
     private void setCurrentExpense() {
         currentMonthlyExpense = BudgetUtils.getCurrentMonth();
+        final NumberFormat formatter = NumberFormat.getCurrencyInstance();
         if (currentMonthlyExpense.getMonthlyBudget() == 0) {
             new MaterialDialog.Builder(getActivity())
                     .title("Input budget")
@@ -170,9 +181,11 @@ public class HomeFragment extends Fragment {
                             double budget = Double.parseDouble(input.toString());
                             currentMonthlyExpense.setMonthlyBudget(budget);
                             currentMonthlyExpense.save();
+                            currentBudget = currentMonthlyExpense.getMonthlyBudget();
+                            budgetSpent = currentMonthlyExpense.getMonthlyExpenses();
 
-                            mMonthlyBudget.setText("€" + currentMonthlyExpense.getMonthlyBudget());
-                            mCurrentlySpent.setText("€" + currentMonthlyExpense.getMonthlyExpenses());
+                            mMonthlyBudget.setText(formatter.format(currentBudget));
+                            mCurrentlySpent.setText(formatter.format(budgetSpent));
 
                         }
                     }).show();
@@ -183,9 +196,27 @@ public class HomeFragment extends Fragment {
 //                    .show();
 
 
-            mMonthlyBudget.setText("€" + (currentMonthlyExpense.getMonthlyBudget() - currentMonthlyExpense.getMonthlyExpenses()));
-            mCurrentlySpent.setText("€" + currentMonthlyExpense.getMonthlyExpenses());
+            budgetSpent = currentMonthlyExpense.getMonthlyExpenses();
+            budgetSpent = BudgetUtils.round(budgetSpent, 2);
+            currentBudget = currentMonthlyExpense.getMonthlyBudget() - budgetSpent;
+            currentBudget = BudgetUtils.round(currentBudget, 2);
+
+            mMonthlyBudget.setText(formatter.format(currentBudget));
+            mCurrentlySpent.setText(formatter.format(budgetSpent));
+
+            setProgress();
 
         }
+    }
+
+    private void setProgress() {
+        int progressPercentage = (int) ((budgetSpent / currentMonthlyExpense.getMonthlyBudget()) * 100);
+        // progressbar.setProgress((int)progressPercentage);
+        ObjectAnimator animation = ObjectAnimator.ofInt(progressbar, "progress", 0, progressPercentage);
+        animation.setDuration(5000); // 0.5 second
+        animation.setInterpolator(new LinearInterpolator());
+        animation.start();
+
+
     }
 }

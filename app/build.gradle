@@ -8,6 +8,10 @@ android {
         disable 'InvalidPackage'
     }
 
+    repositories {
+        maven { url "https://jitpack.io" }
+    }
+
     defaultConfig {
         applicationId "com.gridlockdev.simplebudget"
         minSdkVersion 16
@@ -33,4 +37,5 @@ dependencies {
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.android.support:support-v4:23.0.1'
     compile 'com.android.support:recyclerview-v7:23.0.1'
+    compile 'com.github.PhilJay:MPAndroidChart:v2.1.4'
 }

@@ -23,7 +23,7 @@
         android:textSize="50sp"
         app:fontFamily="roboto_slab"
         app:textStyle="normal"
-        app:textWeight="light" />
+        app:textWeight="bold" />
 
 
     <com.devspark.robototextview.widget.RobotoTextView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -40,6 +40,17 @@
         android:textSize="30sp"
         app:fontFamily="roboto_slab"
         app:textWeight="light" />
+
+
+    <ProgressBar
+        android:id="@+id/budget_progress"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="12dp"
+        android:layout_below="@+id/budget_amount_spent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:max="100" />
 
 </com.gridlockdev.simplebudget.ui.views.SquareRelativeLayout>
 
